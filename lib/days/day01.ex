@@ -11,7 +11,11 @@ defmodule AOC2024.Day01 do
 
   def part1(input) do
     data = parse(input)
-    Enum.zip(data) |> Enum.map(fn {v1, v2} -> Kernel.abs(v1 - v2) end) |> Enum.sum() |> IO.inspect()
+
+    Enum.zip(data)
+    |> Enum.map(fn {v1, v2} -> Kernel.abs(v1 - v2) end)
+    |> Enum.sum()
+    |> IO.inspect()
   end
 
   def part2(input) do

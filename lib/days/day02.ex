@@ -47,8 +47,13 @@ defmodule AOC2024.Day02 do
     data = parse(input)
     valid = get_valid(data)
     already_valid = valid |> Enum.count(&(&1 == true))
-    to_check = Enum.zip(data, valid) |> Enum.filter(fn {_, d2} -> d2 == false end) |> Enum.map(fn {d, _} -> d end)
+
+    to_check =
+      Enum.zip(data, valid)
+      |> Enum.filter(fn {_, d2} -> d2 == false end)
+      |> Enum.map(fn {d, _} -> d end)
+
     fixable = to_check |> Enum.map(&check_fixable/1) |> Enum.count(&(&1 == true))
-    already_valid + fixable |> IO.inspect(label: "Part 2")
+    (already_valid + fixable) |> IO.inspect(label: "Part 2")
   end
 end
