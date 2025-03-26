@@ -18,3 +18,10 @@ defmodule AOC2024.Input do
     end
   end
 end
+
+defmodule AOC2024.Helpers do
+  def input_to_char_matrix(input) do
+    input
+    |> Enum.map(&String.graphemes/1)
+  end
+end
