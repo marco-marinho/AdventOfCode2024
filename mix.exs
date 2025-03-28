@@ -9,7 +9,7 @@ defmodule AOC2024.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       elixirc_options: [
-        optimize: true,
+        optimize: true
       ],
       erlc_options: [
         :debug_info,
@@ -29,7 +29,7 @@ defmodule AOC2024.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:benchee, "~> 1.1", only: :dev},
+      {:benchee, "~> 1.1", only: :dev}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
