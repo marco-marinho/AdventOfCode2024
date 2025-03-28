@@ -15,17 +15,18 @@ defmodule AOC2024.Day07 do
   end
 
   def calculate(head, tail, operators) do
-    if Enum.empty?(tail) do
-      head
-    else
-      [b | rest] = tail
+    case tail do
+      [] -> head
 
-      next_head =
-        Enum.reduce(head, [], fn a, acc ->
-          operators.(a, b) ++ acc
-        end)
+      [b | rest] ->
+        next_head =
+          Enum.reduce(head, [], fn a, acc ->
+            Enum.reduce(operators.(a, b), acc, fn el, acc2 ->
+              [el | acc2]
+            end)
+          end)
 
-      calculate(next_head, rest, operators)
+        calculate(next_head, rest, operators)
     end
   end
 
@@ -38,12 +39,16 @@ defmodule AOC2024.Day07 do
 
   def solve(input, operator, label) do
     parse(input)
-    |> Task.async_stream(fn [target, [head | tail]] ->
-      case Enum.member?(calculate([head], tail, operator), target) do
-        true -> target
-        false -> 0
-      end
-    end)
+    |> Task.async_stream(
+      fn [target, [head | tail]] ->
+        case Enum.member?(calculate([head], tail, operator), target) do
+          true -> target
+          false -> 0
+        end
+      end,
+      max_concurrency: System.schedulers_online(),
+      timeout: :infinity
+    )
     |> Enum.map(&elem(&1, 1))
     |> Enum.sum()
     |> IO.inspect(label: label)
