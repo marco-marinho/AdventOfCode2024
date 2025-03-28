@@ -9,8 +9,8 @@ defmodule AOC2024.Day05 do
         result = [x | result]
 
         {n_queue, n_in_degree} =
-          Enum.reduce(Map.get(graph, x, []), {tail, in_degree},
-          fn neighbor, {queue_acc, in_degree_acc} ->
+          Enum.reduce(Map.get(graph, x, []), {tail, in_degree}, fn neighbor,
+                                                                   {queue_acc, in_degree_acc} ->
             in_degree_acc =
               Map.update(in_degree_acc, neighbor, 0, fn x -> x - 1 end)
 
