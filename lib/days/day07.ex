@@ -16,7 +16,8 @@ defmodule AOC2024.Day07 do
 
   def calculate(head, tail, operators) do
     case tail do
-      [] -> head
+      [] ->
+        head
 
       [b | rest] ->
         next_head =
