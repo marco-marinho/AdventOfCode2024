@@ -21,12 +21,12 @@ defmodule AOC2024.Day10 do
         {1, MapSet.put(visited, {i, j})}
 
       true ->
-        visited = MapSet.put(visited, {i, j})
+        new_visited = MapSet.put(visited, {i, j})
         new_heads = check_smooth(board, {i, j})
 
-        Enum.reduce(new_heads, {0, visited}, fn {a, b}, {acc, ivisited} ->
-          {count, nvisited} = count_trails(board, {a, b}, ivisited, part1)
-          {count + acc, nvisited}
+        Enum.reduce(new_heads, {0, new_visited}, fn {a, b}, {acc_count, acc_visited} ->
+          {count, nvisited} = count_trails(board, {a, b}, acc_visited, part1)
+          {count + acc_count, nvisited}
         end)
     end
   end
@@ -39,7 +39,10 @@ defmodule AOC2024.Day10 do
     board = Matrix.new(values, -1)
 
     heads =
-      for i <- 0..(board.rows - 1), j <- 0..(board.cols - 1), Matrix.get(board, i, j) == 0, do: {i, j}
+      for i <- 0..(board.rows - 1),
+          j <- 0..(board.cols - 1),
+          Matrix.get(board, i, j) == 0,
+          do: {i, j}
 
     Enum.reduce(heads, 0, fn {i, j}, acc ->
       {v, _} = count_trails(board, {i, j}, MapSet.new(), part1)
