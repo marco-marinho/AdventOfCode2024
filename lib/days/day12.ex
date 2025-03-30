@@ -52,12 +52,10 @@ defmodule AOC2024.Day12 do
 
     fences =
       Enum.group_by(fences, fn {a, _} -> elem(a, idx) end)
-      |> Map.to_list()
       |> Enum.map(fn {_, val} ->
         Enum.map(val, fn {a, b} -> {(elem(a, idx) - elem(b, idx)) / 2, elem(a, other_idx)} end)
         |> Enum.filter(fn {x, _} -> x != 0.0 end)
         |> Enum.group_by(fn {x, _} -> x end)
-        |> Map.to_list()
         |> Enum.map(fn {_, val} ->
           Enum.map(val, fn {_, y} -> y end)
         end)
@@ -89,7 +87,6 @@ defmodule AOC2024.Day12 do
       end)
 
     values |> IO.inspect(label: label)
-
   end
 
   def part1(input) do
@@ -97,7 +94,7 @@ defmodule AOC2024.Day12 do
   end
 
   def part2(input) do
-    func = &count_sides(&1, 0) + count_sides(&1, 1)
+    func = &(count_sides(&1, 0) + count_sides(&1, 1))
     solve(input, func, "Part 2")
   end
 end
