@@ -4,7 +4,7 @@ defmodule AOC2024.Day14Test do
   alias AOC2024.Input
 
   test "Day 14 part1 example" do
-    assert Day14.part1(Input.read_example(14, 1)) == 228690000
+    assert Day14.part1(Input.read_example(14, 1)) == 228_690_000
   end
 
   test "Day 14 part2 example" do
