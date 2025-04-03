@@ -65,7 +65,6 @@ defmodule AOC2024.Day15 do
     end
   end
 
-
   def solve(board, commands, box_gliph) do
     {start_pos, _} = board.data |> Map.to_list() |> Enum.find(fn {_, v} -> v == "@" end)
 
