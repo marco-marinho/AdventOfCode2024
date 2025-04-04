@@ -70,7 +70,9 @@ defmodule AOC2024.Day18 do
 
     queue = Heap.new()
     queue = Heap.push(queue, {0, {0, 0}})
-    djikstra(MapSet.new(Enum.take(blocks, 1024)), queue, MapSet.new(), {70, 70}) |> IO.inspect(label: "Part 1")
+
+    djikstra(MapSet.new(Enum.take(blocks, 1024)), queue, MapSet.new(), {70, 70})
+    |> IO.inspect(label: "Part 1")
   end
 
   def part2(input) do
