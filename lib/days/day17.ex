@@ -1,5 +1,6 @@
 defmodule AOC2024.Day17 do
   import Bitwise
+
   def get_combo(operand, regs) do
     case operand do
       n when n in 0..3 -> n
@@ -62,17 +63,19 @@ defmodule AOC2024.Day17 do
       {ip, regs, Enum.reverse(output)}
     else
       {curr, next} = {elem(program, ip), elem(program, ip + 1)}
+
       next_state =
-      case curr do
-        0 -> adv(next, state)
-        1 -> bxl(next, state)
-        2 -> bst(next, state)
-        3 -> jnz(next, state)
-        4 -> bxc(next, state)
-        5 -> out(next, state)
-        6 -> bdv(next, state)
-        7 -> cdv(next, state)
-      end
+        case curr do
+          0 -> adv(next, state)
+          1 -> bxl(next, state)
+          2 -> bst(next, state)
+          3 -> jnz(next, state)
+          4 -> bxc(next, state)
+          5 -> out(next, state)
+          6 -> bdv(next, state)
+          7 -> cdv(next, state)
+        end
+
       run(program, next_state)
     end
   end
@@ -85,19 +88,34 @@ defmodule AOC2024.Day17 do
   end
 
   def parse(input) do
-    reg_vals = input |> Enum.take(3) |> Enum.map(fn x -> String.split(x, ": ") |> Enum.at(1) |> String.to_integer() end)
-    regs = %{"A" => Enum.at(reg_vals, 0), "B" => Enum.at(reg_vals, 1), "C" => Enum.at(reg_vals, 2)}
-    program = input |> Enum.at(4) |> String.split(": ") |> Enum.at(1) |> String.split(",") |> Enum.map(&String.to_integer/1) |> List.to_tuple()
+    reg_vals =
+      input
+      |> Enum.take(3)
+      |> Enum.map(fn x -> String.split(x, ": ") |> Enum.at(1) |> String.to_integer() end)
+
+    regs = %{
+      "A" => Enum.at(reg_vals, 0),
+      "B" => Enum.at(reg_vals, 1),
+      "C" => Enum.at(reg_vals, 2)
+    }
+
+    program =
+      input
+      |> Enum.at(4)
+      |> String.split(": ")
+      |> Enum.at(1)
+      |> String.split(",")
+      |> Enum.map(&String.to_integer/1)
+      |> List.to_tuple()
+
     {program, {0, regs, []}}
   end
 
+  def run_compiled(value, acc) when value == 0, do: Enum.reverse(acc)
+
   def run_compiled(value, acc) do
-    if value == 0 do
-      Enum.reverse(acc)
-    else
-      {a, b} = compiled(value)
-      run_compiled(b, [a | acc])
-    end
+    {a, b} = compiled(value)
+    run_compiled(b, [a | acc])
   end
 
   def dfs(value, idx, lookup, acc) when idx > length(lookup) do
@@ -108,6 +126,7 @@ defmodule AOC2024.Day17 do
     Enum.reduce(0..7, acc, fn i, iacc ->
       new_value = (value <<< 3) + i
       res = run_compiled(new_value, [])
+
       if res == Enum.take(lookup, idx) |> Enum.reverse() do
         dfs(new_value, idx + 1, lookup, iacc)
       else
@@ -127,5 +146,4 @@ defmodule AOC2024.Day17 do
     lookup = Enum.reverse(Tuple.to_list(program))
     dfs(0, 1, lookup, []) |> Enum.min() |> IO.inspect()
   end
-
 end

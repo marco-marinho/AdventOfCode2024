@@ -6,13 +6,13 @@ defmodule AOC2024.Day11Test do
 
   test "Day 11 part1 example" do
     capture_io(fn ->
-    assert Day11.part1(Input.read_example(11, 1)) == 55312
+      assert Day11.part1(Input.read_example(11, 1)) == 55312
     end)
   end
 
   test "Day 11 part2 example" do
     capture_io(fn ->
-    assert Day11.part2(Input.read_example(11, 1)) == 65_601_038_650_482
-  end)
+      assert Day11.part2(Input.read_example(11, 1)) == 65_601_038_650_482
+    end)
   end
 end
