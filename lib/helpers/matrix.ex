@@ -27,6 +27,10 @@ defmodule AOC2024.Matrix do
     Map.get(data, {row, col}, default)
   end
 
+  def get(%AOC2024.Matrix{data: data, default: default}, {row, col}) do
+    Map.get(data, {row, col}, default)
+  end
+
   def set(%AOC2024.Matrix{} = matrix, row, col, val) do
     %AOC2024.Matrix{matrix | data: Map.put(matrix.data, {row, col}, val)}
   end
