@@ -12,7 +12,7 @@ defmodule AOC2024.Day22Test do
 
   test "Day 22 part2 example" do
     capture_io(fn ->
-    assert Day22.part2(Input.read_example(22, 2)) == 23
+      assert Day22.part2(Input.read_example(22, 2)) == 23
     end)
   end
 end

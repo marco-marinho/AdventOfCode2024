@@ -9,18 +9,29 @@ defmodule AOC2024.Day22 do
     Enum.zip(list, tl(list)) |> Enum.map(fn {a, b} -> b - a end)
   end
 
-  def get_points(values) do
+  def flatten_index([x, y, z, w]) do
+    (x + 9) * 18 * 18 * 18 + (y + 9) * 18 * 18 + (z + 9) * 18 + (w + 9)
+  end
+
+  def get_points(values, acc) do
     diff = diff(values) |> Enum.chunk_every(4, 1, :discard)
     values = values |> Enum.drop(4)
+    visited = :array.new(19 * 19 * 19 * 19, default: false)
 
     Enum.zip(diff, values)
-    |> Enum.reduce(Map.new(), fn {key, value}, acc ->
-      if Map.has_key?(acc, key) do
-        acc
+    |> Enum.reduce({acc, visited}, fn {key, value}, {acc, seen} ->
+      index = flatten_index(key)
+
+      if :array.get(index, seen) do
+        {acc, seen}
       else
-        Map.put(acc, key, value)
+        n_seen = :array.set(index, true, seen)
+        c_val = :array.get(index, acc)
+        n_acc = :array.set(index, c_val + value, acc)
+        {n_acc, n_seen}
       end
     end)
+    |> elem(0)
   end
 
   def part1(input) do
@@ -51,24 +62,12 @@ defmodule AOC2024.Day22 do
         acc |> Enum.reverse()
       end)
 
-    sell_points = values |> Enum.map(&get_points/1)
-
-    all_sell_keys =
-      sell_points
-      |> Enum.map(fn x -> Map.keys(x) end)
-      |> Enum.reduce(MapSet.new(), fn keys, acc ->
-        MapSet.union(acc, MapSet.new(keys))
-      end)
-
-    possible_profits =
-      all_sell_keys
-      |> Enum.map(fn key ->
-        sell_points
-        |> Enum.map(fn x ->
-          Map.get(x, key, 0)
-        end)
-        |> Enum.sum()
-      end)
-    possible_profits |> Enum.max() |> IO.inspect(label: "Part 2")
+    values
+    |> Enum.reduce(:array.new(19 * 19 * 19 * 19, default: 0), fn values, acc ->
+      get_points(values, acc)
+    end)
+    |> :array.to_list()
+    |> Enum.max()
+    |> IO.inspect(label: "Part 2")
   end
 end
