@@ -41,9 +41,7 @@ defmodule AOC2024.Day23 do
   end
 
   def triad_has_t({a, b, c}) do
-    String.starts_with?(a, "t") or
-      String.starts_with?(b, "t") or
-      String.starts_with?(c, "t")
+    Enum.any?([a, b, c], &String.starts_with?(&1, "t"))
   end
 
   def bron_kerbosch(map, r, p, x, cliques) do
@@ -67,9 +65,9 @@ defmodule AOC2024.Day23 do
             cliques
           )
 
-        p = MapSet.delete(p, v)
-        x = MapSet.put(x, v)
-        bron_kerbosch(map, r, p, x, new_cliques)
+        p1 = MapSet.delete(p, v)
+        x1 = MapSet.put(x, v)
+        bron_kerbosch(map, r, p1, x1, new_cliques)
     end
   end
 
