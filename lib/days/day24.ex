@@ -143,13 +143,13 @@ defmodule AOC2024.Day24 do
     end
     end)
     |> elem(0)
-    |> IO.inspect()
+    |> IO.inspect(label: "Part 1")
   end
 
   def part2(input) do
     [_, _, rest] = Enum.chunk_by(input, &(&1 == ""))
     connections = parse_connections(rest)
-    renames = %{"gwh" => "z09", "z09" => "gwh"}
+    renames = %{"gwh" => "z09", "z09" => "gwh", "wbw" => "wgb", "wgb" => "wbw", "rcb" => "z21", "z21" => "rcb", "jct" => "z39", "z39" => "jct"}
     connections = apply_swaps(connections, renames)
     aliased_connections = alias_names(connections)
     aliased_connections = Enum.map(aliased_connections, fn {a, b, op, output} ->
@@ -160,6 +160,7 @@ defmodule AOC2024.Day24 do
     Enum.each(aliased_connections, fn {a, b, op, output} ->
       IO.puts("#{a} #{op} #{b} -> #{output}")
     end)
+    ["gwh", "z09", "wbw", "wgb", "rcb", "z21", "jct", "z39"] |> Enum.sort() |> Enum.join(",") |> IO.inspect(label: "Part 2")
   end
 
 end
